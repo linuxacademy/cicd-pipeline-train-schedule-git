@@ -1,0 +1,59 @@
+body {
+  padding: 30px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+h2 {
+	margin:0 0 .5em 0;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#wrapper {
+	position:relative;
+}
+
+#trains {
+	top:0; left:0; margin-bottom:25px;
+	padding:15px;
+	border:1px solid #CCC;
+	background:rgba(80,120,255,0.05);
+}
+
+#trainInfo {
+	top:0; left:0;
+	padding:15px;
+	border:1px solid #CCC;
+	background:rgba(80,120,255,0.05);
+}
+	#trainInfo p {
+		padding:15px;
+	}
+	#trainInfo table {
+		border-collapse:separate;
+		border-spacing:1px;
+		background:#CCC;
+	}
+		#trainInfo table th {
+			background:#EEE;
+			font-weight:600;
+			padding:10px 20px;
+			text-align:center;
+		}
+		#trainInfo table tbody {
+			padding:0; margin:0;
+			border-collapse:collapse;
+			border-spacing:0px;
+		}
+			#trainInfo table td {
+				background:#FFF;
+				padding:5px 10px;
+				text-align:center;
+			}
+
+fieldset {
+	border:0;
+	padding:0; margin:0;
+}
