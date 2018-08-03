@@ -1,0 +1,37 @@
+plugins {
+	  //inlude the nodeJS plugin to execute nodejs and npm tasks:Handles diff aspect of build related to node.js.
+	  id "com.moowork.node" version "1.2.0"
+	}
+	
+// Ensures node plugin to download node.js and npm locally for this particular project.
+//So they need not be installed in system to run this build.
+	node {
+		download = true
+	}
+	
+
+	//declare a build task: Need to be executed to execute the build and called by CI tool.
+	task build 
+	
+
+	//declare a task to create a zip of the app and specify the files that needs to be included.
+	task zip(type: Zip) {
+		from ('.') {
+			include "*"
+			include "bin/**"
+			include "data/**"
+			include "node_modules/**"
+			include "public/**"
+			include "routes/**"
+			include "views/**"
+		}
+		destinationDir(file("dist")) //Specifies the destination directory.
+		baseName "trainSchedule" //Specifies the name of zip file
+	}
+build.dependsOn zip
+zip.dependsOn npm_build
+build.dependsOn npm_build //task provided by node plugin.
+npm_build.dependsOn npmInstall //Downloads shared library dependencies that are required by node.js applications
+npm_build.dependsOn npm_test
+npm_test.dependsOn npmInstall
+
