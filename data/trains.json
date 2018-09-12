@@ -61,8 +61,8 @@
 				{
 					"station": "Cypress",
 					"status": "ON-TIME",
-					"arrival": "12:00pm",
-					"departure": "12:10pm"
+					"arrival": "12:30pm",
+					"departure": "12:40pm"
 				},
 				{
 					"station": "Pine",
