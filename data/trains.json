@@ -13,7 +13,7 @@
 					"station": "Pine",
 					"status": "ON-TIME",
 					"arrival": "1:00pm",
-					"departure": "1:10pm"
+					"departure": "1:15pm"
 				}
 			]
 		},
@@ -24,7 +24,7 @@
 					"station": "Pine",
 					"status": "ON-TIME",
 					"arrival": "12:00pm",
-					"departure": "12:10pm"
+					"departure": "12:15pm"
 				},
 				{
 					"station": "Sycamore",
