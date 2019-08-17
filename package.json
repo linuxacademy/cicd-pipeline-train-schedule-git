@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "test": "./node_modules/.bin/mocha"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
@@ -13,5 +14,9 @@
     "jade": "~1.11.0",
     "lowdb": "^1.0.0",
     "morgan": "~1.9.0"
+  },
+  "devDependencies": {
+    "mocha": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }
