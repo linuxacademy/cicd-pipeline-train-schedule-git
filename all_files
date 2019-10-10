@@ -1,0 +1,13 @@
+total 44
+-rw-rw-r--. 1 cloud_user cloud_user   582 Oct  9 10:21 README.md
+drwxrwxr-x. 2 cloud_user cloud_user    24 Oct  9 10:21 data
+drwxrwxr-x. 2 cloud_user cloud_user    16 Oct  9 10:21 bin
+-rw-rw-r--. 1 cloud_user cloud_user  1079 Oct  9 10:21 app.js
+drwxrwxr-x. 2 cloud_user cloud_user    37 Oct  9 10:21 routes
+drwxrwxr-x. 4 cloud_user cloud_user    42 Oct  9 10:21 public
+-rw-rw-r--. 1 cloud_user cloud_user 27225 Oct  9 10:21 package-lock.json
+-rw-rw-r--. 1 cloud_user cloud_user   343 Oct  9 10:21 package.json
+drwxrwxr-x. 2 cloud_user cloud_user    58 Oct  9 10:21 views
+-rw-rw-r--. 1 cloud_user cloud_user   102 Oct  9 10:31 san.txt
+drwxrwxr-x. 2 cloud_user cloud_user    35 Oct  9 11:05 build
+-rw-rw-r--. 1 cloud_user cloud_user     0 Oct  9 12:19 all_files
