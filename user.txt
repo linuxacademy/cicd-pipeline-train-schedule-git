@@ -1,0 +1,8 @@
+adm:x:4:ec2-user
+wheel:x:10:ec2-user,cloud_user,user
+users:x:100:
+systemd-journal:x:190:ec2-user
+user:x:1001:
+ec2-user:x:1003:
+cloud_user:x:1005:
+ssm-user:x:1006:
