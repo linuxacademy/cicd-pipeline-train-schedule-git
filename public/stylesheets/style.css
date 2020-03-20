@@ -17,7 +17,7 @@ a {
 
 #trains {
 	top:0; left:0; margin-bottom:25px;
-	padding:15px;
+	padding:20px;
 	border:1px solid #CCC;
 	background:rgba(80,120,255,0.05);
 }
@@ -33,12 +33,12 @@ a {
 	}
 	#trainInfo table {
 		border-collapse:separate;
-		border-spacing:1px;
+		border-spacing:2px;
 		background:#CCC;
 	}
 		#trainInfo table th {
 			background:#EEE;
-			font-weight:600;
+			font-weight:605;
 			padding:10px 20px;
 			text-align:center;
 		}
