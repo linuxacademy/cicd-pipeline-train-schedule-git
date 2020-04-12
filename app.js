@@ -3,11 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var process = require('process');
 
 var indexRouter = require('./routes/index');
 var trainsRouter = require('./routes/trains');
 
 var app = express();
+
+process.title = 'train-schedule-app'
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

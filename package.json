@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "stop": "pkill --signal SIGINT train-schedule"
   },
   "dependencies": {
     "cookie-parser": "~1.4.3",
