@@ -1,0 +1,186 @@
+AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  LogLevel:
+    Type: String
+    Description: 'Log level for Lambda function logging, e.g., ERROR, INFO, DEBUG, etc'
+    Default: DEBUG
+  DelaySeconds:
+    Description: >-
+      The time in seconds that the delivery of all messages in the queue is
+      delayed. You can specify an integer value of 0 to 900 (15 minutes).
+    Type: Number
+    Default: 0
+  MaximumMessageSize:
+    Type: Number
+    Description: >-
+      The limit of how many bytes that a message can contain before Amazon SQS
+      rejects it, 1024 bytes (1 KiB) to 262144 bytes (256 KiB)
+    Default: 262144
+  MessageRetentionPeriod:
+    Description: >-
+      The number of seconds that Amazon SQS retains a message. You can specify
+      an integer value from 60 seconds (1 minute) to 1209600 seconds (14 days). 
+    Type: Number
+    Default: 345600
+  ReceiveMessageWaitTimeSeconds:
+    Description: >-
+      Specifies the duration, in seconds, that the ReceiveMessage action call
+      waits until a message is in the queue in order to include it in the
+      response, as opposed to returning an empty response if a message is not
+      yet available. 1 to 20
+    Type: Number
+    Default: 0
+  VisibilityTimeout:
+    Description: >-
+      This should be longer than the time it would take to process and delete a
+      message, this should not exceed 12 hours.
+    Type: Number
+    Default: 30
+  maxReceiveCount:
+    Description: >-
+      The number of times a message is delivered to the source queue before
+      being moved to the dead-letter queue. When the ReceiveCount for a message
+      exceeds the maxReceiveCount for a queue, Amazon SQS moves the message to
+      the dead-letter-queue.
+    Type: Number
+    Default: 1
+  MaxAttempts:
+    Description: >-
+      An integer, representing the maximum number of replay attempts . If the
+      error recurs more times than specified, retries cease. A value of 0 (zero)
+      is permitted and indicates that the error or errors should never be
+      retried.
+    Type: Number
+    Default: 3
+  BackoffRate:
+    Description: >-
+      An integer that is the multiplier by which the replay interval increases
+      on each attempt
+    Type: Number
+    Default: 2
+Metadata:
+  'AWS::CloudFormation::Interface':
+    ParameterGroups:
+      - Label:
+          default: SQS default parameters
+        Parameters:
+          - DelaySeconds
+          - MaximumMessageSize
+          - MessageRetentionPeriod
+          - ReceiveMessageWaitTimeSeconds
+          - VisibilityTimeout
+          - maxReceiveCount
+      - Label:
+          default: Replay feature
+        Parameters:
+          - BackoffRate
+          - MaxAttempts
+Outputs:
+  ReplayFunction:
+    Description: Lambda Function Name
+    Value: !Ref ReplayFunction
+  MainQueueArn:
+    Description: Main SQS queue ARN
+    Value: !GetAtt 
+      - MainQueue
+      - Arn
+  ReplayDeadLetterQueue:
+    Description: 'Replay SQS dead letter queue ARN, managed by the Lambda Function'
+    Value: !GetAtt 
+      - ReplayDeadLetterQueue
+      - Arn
+  DeadLetterQueue:
+    Description: 'SQS dead letter queue ARN, managed manually'
+    Value: !GetAtt 
+      - DeadLetterQueue
+      - Arn
+Resources:
+  MainQueue:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      DelaySeconds: !Ref DelaySeconds
+      MaximumMessageSize: !Ref MaximumMessageSize
+      MessageRetentionPeriod: !Ref MessageRetentionPeriod
+      ReceiveMessageWaitTimeSeconds: !Ref ReceiveMessageWaitTimeSeconds
+      VisibilityTimeout: !Ref VisibilityTimeout
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt 
+          - ReplayDeadLetterQueue
+          - Arn
+        maxReceiveCount: !Ref maxReceiveCount
+  ReplayDeadLetterQueue:
+    Type: 'AWS::SQS::Queue'
+    Properties:
+      VisibilityTimeout: !Ref VisibilityTimeout
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt 
+          - DeadLetterQueue
+          - Arn
+        maxReceiveCount: 1
+  DeadLetterQueue:
+    Type: 'AWS::SQS::Queue'
+  ReplayFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      Code:
+        S3Bucket: awsserverlessrepo-changesets-1iiv3xa62ln3m
+        S3Key: >-
+          054347053025/arn:aws:serverlessrepo:eu-west-1:505173050228:applications-amazon-sqs-dlq-replay-backoff-versions-1.0.0/7cf9da5c-bd50-45e3-985b-c284af062a52
+      Handler: replay.handler
+      Role: !GetAtt 
+        - ReplayFunctionRole
+        - Arn
+      Runtime: python3.7
+      Timeout: !Ref VisibilityTimeout
+      Environment:
+        Variables:
+          LOG_LEVEL: !Ref LogLevel
+          SQS_MAIN_URL: !Ref MainQueue
+          MAX_ATTEMPS: !Ref MaxAttempts
+          BACKOFF_RATE: !Ref BackoffRate
+          MESSAGE_RETENTION_PERIOD: !Ref MessageRetentionPeriod
+      Tags:
+        - Key: 'lambda:createdBy'
+          Value: SAM
+      TracingConfig:
+        Mode: Active
+  ReplayFunctionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+        - 'arn:aws:iam::aws:policy/AWSXrayWriteOnlyAccess'
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole'
+      Policies:
+        - PolicyName: ReplayFunctionRolePolicy0
+          PolicyDocument:
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'sqs:SendMessage*'
+                Resource: !Sub 
+                  - >-
+                    arn:${AWS::Partition}:sqs:${AWS::Region}:${AWS::AccountId}:${queueName}
+                  - queueName: !GetAtt 
+                      - MainQueue
+                      - QueueName
+      Tags:
+        - Key: 'lambda:createdBy'
+          Value: SAM
+  ReplayFunctionMySQSEvent:
+    Type: 'AWS::Lambda::EventSourceMapping'
+    Properties:
+      BatchSize: 1
+      EventSourceArn: !GetAtt 
+        - ReplayDeadLetterQueue
+        - Arn
+      FunctionName: !Ref ReplayFunction
