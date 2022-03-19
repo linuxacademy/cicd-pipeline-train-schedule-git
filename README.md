@@ -18,6 +18,9 @@ Once it is running, you can access it in a browser at [http://localhost:3000](ht
 
 PROJECT that demonstartors a complete cicd pipeline
 
+
+WOW that makes repeating my new functionality
+
 need to add payment functionality
 
 
