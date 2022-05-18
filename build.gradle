@@ -1,0 +1,15 @@
+plugins {
+id 'com.moowork.node' version '1.2.0'
+}
+
+task sayHello {
+doLast {
+println 'Hello, World!'
+ }
+}
+
+task anotherTask {
+doLast {
+println 'This is another task'
+ }
+}
