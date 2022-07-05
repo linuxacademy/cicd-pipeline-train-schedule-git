@@ -1,17 +1,17 @@
 {
 	"trains": [
 		{
-			"name": "Hogwarts Express",
+			"name": "R3DS Trap House",
 			"stops": [
 				{
-					"station": "Sycamore",
+					"station": "Trap Basement",
 					"status": "ON-TIME",
-					"arrival": "12:00pm",
-					"departure": "12:10pm"
+					"arrival": "3:00pm",
+					"departure": "4:10pm"
 				},
 				{
-					"station": "Pine",
-					"status": "ON-TIME",
+					"station": "The Hole",
+					"status": "DELAYED",
 					"arrival": "1:00pm",
 					"departure": "1:10pm"
 				}
