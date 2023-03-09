@@ -8,7 +8,7 @@ It isnnnsnsnssn not necessary to run this app locally in order to complete the l
 
     npm install
 
-Thennnnnnnn, you can run the app with:
+Themmmsmsmsmsmsm, you can run the app with:
 
     npm start
 
