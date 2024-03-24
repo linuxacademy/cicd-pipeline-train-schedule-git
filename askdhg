@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  h1 Train Schedule
+  p Select your train below to see its current schedule.
+  #wrapper
+    #trainList
+      h2 Trains
+      #trains.d-flex.flex-row
+    #trainInfo
+      strong  <span id='trainName'></span>
+      #trainSchedule
+        strong Select a train to view its current schedule.
